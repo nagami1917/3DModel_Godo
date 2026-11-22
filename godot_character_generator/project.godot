@@ -1,0 +1,15 @@
+; Godot 4 procedural character and creature generator — isolated project.
+config_version=5
+
+[application]
+config/name="Procedural Character Generator"
+run/main_scene=""
+config/features=PackedStringArray("4.3", "GL Compatibility")
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+
+[editor_plugins]
+enabled=PackedStringArray("res://addons/procedural_character_generator/plugin.cfg")

@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="CharacterDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/character_definition.gd" id="1_definition"]
+
+[resource]
+script = ExtResource("1_definition")
+character_id = &"wanderer"
+display_name = "Wanderer"
+category = 0
+species = "human"
+body_type = "athletic"
+height_m = 1.8
+shoulder_width = 0.43
+hip_width = 0.32
+head_height_ratio = 0.135
+body_mass = 1.0
+skin_color = Color(0.62, 0.39, 0.28, 1)
+secondary_color = Color(0.2, 0.15, 0.12, 1)
+accent_color = Color(0.48, 0.12, 0.09, 1)
+quality = 1
+geometry_detail = 20
+generation_seed = 1917
+generate_collision = true
+collision_height_m = 1.75
+collision_radius_m = 0.28
+output_directory = "res://generated/characters"
