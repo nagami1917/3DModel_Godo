@@ -19,7 +19,7 @@ This is the first, explicitly limited generator increment—not the complete pro
 ## Open in Godot
 
 1. Open `godot_character_generator/project.godot` with Godot 4.3 or a compatible Godot 4 release.
-2. Allow the editor to scan the project; the plugin is enabled in `project.godot` and adds a dock on the right.
+2. Allow the editor to scan the project; the plugin is enabled in `project.godot` and adds a **Character Generator** tab to the bottom panel.
 3. Enter a name, category, height, seed, and detail. Use **Preview**, **Validate**, or **Save actor**.
 4. New output is written beneath `res://generated/characters/<character_id>/`. Existing scene/definition files are never replaced automatically.
 
