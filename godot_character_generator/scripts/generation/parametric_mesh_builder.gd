@@ -44,7 +44,7 @@ static func _append_ellipsoid(
 	var orient := Basis(x_axis, y_axis, z_axis)
 	var latitude_steps := maxi(segments / 2, 4)
 	var longitude_steps := segments
-	var base_index := tool.get_vertex_count()
+	var base_index: int = int(tool.get_vertex_count())
 	for latitude in range(latitude_steps + 1):
 		var lat := -PI * 0.5 + PI * float(latitude) / float(latitude_steps)
 		for longitude in range(longitude_steps + 1):
@@ -55,10 +55,10 @@ static func _append_ellipsoid(
 			tool.add_vertex(_vertex(center, radii, orient, lat, lon))
 	for latitude in range(latitude_steps):
 		for longitude in range(longitude_steps):
-			var a := base_index + latitude * (longitude_steps + 1) + longitude
-			var b := a + longitude_steps + 1
-			var c := a + 1
-			var d := b + 1
+			var a: int = base_index + latitude * (longitude_steps + 1) + longitude
+			var b: int = a + longitude_steps + 1
+			var c: int = a + 1
+			var d: int = b + 1
 			# Indexed vertices let SurfaceTool average normals across each ellipsoid.
 			# Pole fans use one triangle per sector to avoid zero-area faces.
 			if latitude == 0:

@@ -72,10 +72,10 @@ func _setup_preview_world() -> void:
 	world.name = "PreviewWorld"
 	preview_viewport.add_child(world)
 	var camera := Camera3D.new()
+	world.add_child(camera)
 	camera.current = true
 	camera.position = Vector3(0, 1.05, 4.5)
 	camera.look_at(Vector3(0, 0.9, 0), Vector3.UP)
-	world.add_child(camera)
 	var light := DirectionalLight3D.new()
 	light.rotation_degrees = Vector3(-35, -25, 0)
 	world.add_child(light)
