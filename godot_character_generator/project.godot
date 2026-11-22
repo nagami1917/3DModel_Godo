@@ -1,15 +1,32 @@
-; Godot 4 procedural character and creature generator — isolated project.
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
 config_version=5
 
-[application]
-config/name="Procedural Character Generator"
-run/main_scene=""
-config/features=PackedStringArray("4.3", "GL Compatibility")
+[animation]
 
-[rendering]
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
-textures/default_filters/use_nearest_mipmap_filter=false
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
+[application]
+
+config/name="Procedural Character Generator"
+run/main_scene="uid://dea01yms4ov51"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[dotnet]
+
+project/assembly_name="Procedural Character Generator"
 
 [editor_plugins]
+
 enabled=PackedStringArray("res://addons/procedural_character_generator/plugin.cfg")
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

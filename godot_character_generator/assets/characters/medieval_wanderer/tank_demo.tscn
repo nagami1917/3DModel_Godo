@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/tank-standard.glb" id="1_standard"]
+[ext_resource type="PackedScene" path="res://assets/tank-allies.glb" id="2_allies"]
+[ext_resource type="Script" path="res://tank_demo.gd" id="3_script"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
+size = Vector2(12, 12)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
+albedo_color = Color(0.075, 0.09, 0.1, 1)
+roughness = 0.95
+
+[sub_resource type="Environment" id="Environment_world"]
+background_mode = 1
+background_color = Color(0.03, 0.045, 0.05, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.48, 0.56, 0.62, 1)
+ambient_light_energy = 0.65
+
+[node name="TankDemo" type="Node3D"]
+script = ExtResource("3_script")
+
+[node name="Standard" parent="." instance=ExtResource("1_standard")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0, 0)
+
+[node name="Allies" parent="." instance=ExtResource("2_allies")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0, 0)
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_ground")
+material_override = SubResource("StandardMaterial3D_ground")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_world")
+
+[node name="KeyLight" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-38, -32, 0)
+light_energy = 2.2
+shadow_enabled = true
+
+[node name="FillLight" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-18, 150, 0)
+light_color = Color(0.58, 0.72, 0.9, 1)
+light_energy = 0.6
+shadow_enabled = false
+
+[node name="Camera3D" type="Camera3D" parent="."]
+current = true
+fov = 34.0
