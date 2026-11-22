@@ -3,7 +3,7 @@ config_version=5
 
 [application]
 config/name="Procedural Character Generator"
-run/main_scene="res://prototype/scenes/stage_01_player_test.tscn"
+run/main_scene=""
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
 [rendering]

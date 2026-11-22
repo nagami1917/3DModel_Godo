@@ -35,14 +35,6 @@ godot --headless --path godot_character_generator --script res://tests/smoke_tes
 
 The test checks humanoid mesh output, same-seed vertex reproducibility, actor collision validation, and quadruped dispatch. It does not replace editor import, visual inspection, resource save/reopen, or rig/animation/export testing.
 
-## Third-person knight prototype — Stage 1
-
-The project now opens into a small movement test scene with an original low-poly knight proxy, camera-relative `CharacterBody3D` movement, Shift sprinting, a mouse-controlled over-the-shoulder `SpringArm3D` camera, and runtime-generated placeholder idle/walk/run animations blended by `AnimationTree`.
-
-Run the project with **F5**, or run `prototype/scenes/stage_01_player_test.tscn` with **F6**. Use WASD, Shift, mouse look, Esc to release the cursor, and click to recapture. The prototype is deliberately staged: combat, health/stamina, dodge, enemies, checkpoints, and their UI are not implemented in Stage 1.
-
-See [`docs/third_person_prototype_stage_01.md`](docs/third_person_prototype_stage_01.md) for the hierarchy, controls, collision layers, animation setup, Inspector settings, and testing checklist.
-
 ## Validation status
 
 No Godot executable was installed in the authoring environment, so editor import, script parsing by Godot, rendering inspection, resource round-trip, and runtime tests have **not** been performed. GDScript files were parsed/formatted with `gdtoolkit`; runtime API compatibility must still be verified in Godot before treating this project as tested.
