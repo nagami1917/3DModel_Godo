@@ -13,15 +13,17 @@ static func build_surface_groups(
 	for group_index in range(groups.size()):
 		var tool := SurfaceTool.new()
 		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+		var next_vertex_index: int = 0
 		for part in groups[group_index].get("parts", []):
-			_append_ellipsoid(
+			next_vertex_index = _append_ellipsoid(
 				tool,
 				part.get("center", Vector3.ZERO),
 				part.get("radii", Vector3.ONE),
 				part.get("axis", Vector3.UP),
-				segments
+				segments,
+				next_vertex_index
 			)
-		if tool.get_vertex_count() == 0:
+		if next_vertex_index == 0:
 			continue
 		tool.generate_normals()
 		var surface_index := mesh.get_surface_count()
@@ -32,8 +34,13 @@ static func build_surface_groups(
 
 
 static func _append_ellipsoid(
-	tool: SurfaceTool, center: Vector3, radii: Vector3, axis: Vector3, segments: int
-) -> void:
+	tool: SurfaceTool,
+	center: Vector3,
+	radii: Vector3,
+	axis: Vector3,
+	segments: int,
+	base_index: int
+) -> int:
 	var y_axis := axis.normalized()
 	if y_axis.length_squared() < 0.5:
 		y_axis = Vector3.UP
@@ -44,7 +51,6 @@ static func _append_ellipsoid(
 	var orient := Basis(x_axis, y_axis, z_axis)
 	var latitude_steps := maxi(segments / 2, 4)
 	var longitude_steps := segments
-	var base_index: int = int(tool.get_vertex_count())
 	for latitude in range(latitude_steps + 1):
 		var lat := -PI * 0.5 + PI * float(latitude) / float(latitude_steps)
 		for longitude in range(longitude_steps + 1):
@@ -76,6 +82,7 @@ static func _append_ellipsoid(
 				tool.add_index(b)
 				tool.add_index(d)
 				tool.add_index(c)
+	return base_index + (latitude_steps + 1) * (longitude_steps + 1)
 
 
 static func _vertex(
