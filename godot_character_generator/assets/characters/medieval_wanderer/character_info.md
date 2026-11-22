@@ -1,6 +1,6 @@
 # Medieval Wanderer
 
-A static, stylized low-poly medieval traveler asset authored as a Godot 4.7-friendly GLB with a reusable actor scene wrapper.
+A static, detailed stylized low-poly medieval traveler asset authored as a Godot 4.7-friendly GLB with a reusable actor scene wrapper.
 
 ## Design and dimensions
 
@@ -12,9 +12,10 @@ A static, stylized low-poly medieval traveler asset authored as a Godot 4.7-frie
 
 ## Geometry and materials
 
-- 9 named GLB mesh/material groups: tunic, trim, trousers, leather, skin, iron, brass, hair, and eye details.
-- Approximately 6,628 vertices and 12,964 triangles across the groups.
-- PBR base-color, metallic, and roughness factors are embedded in the GLB. No external textures are required; there are no baked lights or shadows.
+- 11 named GLB mesh/material groups: tunic, trim, trousers, leather, skin, iron, brass, hair, eye details, linen stitching, and cloth folds.
+- Approximately 13,688 vertices and 26,376 triangles across the groups.
+- Detail pass adds raised cape and tabard stitching, harness seams, boot laces and eyelets, belt holes, cloth folds, shoulder rivets, a small heraldic chevron, and a wrapped sword grip.
+- PBR base-color, metallic, and roughness factors are embedded in the GLB. No external textures are required; there are no baked lights or shadows. Surface variation is geometric/material-based, not texture-map detail.
 - The asset is static. It has no skeleton, skin weights, animations, or independently animated equipment.
 
 ## Godot files and hierarchy
