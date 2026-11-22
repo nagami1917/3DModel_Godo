@@ -32,6 +32,8 @@ PALETTE = {
     "brass": PBRMaterial(name="Aged brass", baseColorFactor=[157, 119, 55, 255], metallicFactor=0.72, roughnessFactor=0.42),
     "hair": PBRMaterial(name="Dark chestnut hair", baseColorFactor=[49, 34, 27, 255], metallicFactor=0.0, roughnessFactor=0.9),
     "eye": PBRMaterial(name="Eyes and details", baseColorFactor=[31, 27, 24, 255], metallicFactor=0.0, roughnessFactor=0.58),
+    "thread": PBRMaterial(name="Natural linen stitching", baseColorFactor=[170, 148, 107, 255], metallicFactor=0.0, roughnessFactor=0.94),
+    "fold": PBRMaterial(name="Deep cloth folds", baseColorFactor=[39, 53, 36, 255], metallicFactor=0.0, roughnessFactor=0.96),
 }
 PARTS: dict[str, list[trimesh.Trimesh]] = {name: [] for name in PALETTE}
 
@@ -114,6 +116,22 @@ def add_bar(material: str, a: tuple[float, float, float], b: tuple[float, float,
     PARTS[material].append(mesh)
 
 
+def add_stitch_line(
+    start: tuple[float, float, float],
+    end: tuple[float, float, float],
+    count: int,
+    material: str = "thread",
+    size: float = 0.005,
+) -> None:
+    """Place spaced, raised stitch dashes along a seam or strap edge."""
+    a = np.asarray(start, dtype=float)
+    b = np.asarray(end, dtype=float)
+    for index in range(count):
+        t = (index + 0.5) / count
+        point = a + (b - a) * t
+        add_ellipsoid(material, tuple(point), (size, size * 0.65, size * 0.45), subdivisions=1)
+
+
 def add_belt(y0: float, y1: float, outer: tuple[float, float], inner: tuple[float, float], sections: int = 24) -> None:
     """Closed elliptical belt band, with both inner and outer walls."""
     vertices: list[list[float]] = []
@@ -174,6 +192,10 @@ def add_tabard() -> None:
 
 
 def build_character() -> trimesh.Scene:
+    # Reset module-level material buckets so repeated calls remain reproducible.
+    for meshes in PARTS.values():
+        meshes.clear()
+
     # Legs, trousers, and sturdy turned-up boots.
     add_ellipsoid("trousers", (0.0, 0.83, 0.0), (0.205, 0.16, 0.12))
     for side in (-1.0, 1.0):
@@ -185,7 +207,22 @@ def build_character() -> trimesh.Scene:
         add_oriented_ellipsoid("trousers", knee, ankle, 0.072, 0.077)
         add_ellipsoid("leather", (side * 0.145, 0.20, 0.005), (0.08, 0.055, 0.083))
         add_ellipsoid("leather", (side * 0.145, 0.115, 0.045), (0.098, 0.105, 0.16))
+        add_box("leather", (side * 0.145, 0.027, 0.045), (0.17, 0.025, 0.32))
         add_box("iron", (side * 0.145, 0.175, -0.025), (0.13, 0.035, 0.055))
+        for lace_y in (0.18, 0.21, 0.24):
+            add_bar(
+                "thread",
+                (side * 0.145 - 0.034, lace_y, 0.186),
+                (side * 0.145 + 0.034, lace_y + 0.012, 0.186),
+                0.0045,
+            )
+            for eyelet_x in (-0.042, 0.042):
+                add_ellipsoid(
+                    "brass",
+                    (side * 0.145 + eyelet_x, lace_y, 0.185),
+                    (0.006, 0.006, 0.004),
+                    subdivisions=1,
+                )
 
     # Tunic shell, shoulders, collar and weathered cape.
     add_loft("tunic", [
@@ -217,6 +254,31 @@ def build_character() -> trimesh.Scene:
     add_ellipsoid("trim", (0.215, 0.95, 0.09), (0.09, 0.10, 0.075))
     add_box("leather", (0.215, 0.95, 0.17), (0.12, 0.12, 0.035))
 
+    # Visible tailoring: tabard edge stitches, harness stitches, pouch seams,
+    # cape piping, belt holes, and shallow cloth folds.
+    for side in (-1.0, 1.0):
+        add_stitch_line(
+            (side * 0.092, 0.95, 0.157),
+            (side * 0.074, 0.62, 0.157),
+            13,
+            size=0.004,
+        )
+        add_stitch_line(
+            (side * 0.255, 1.28, -0.185),
+            (side * 0.35, 0.57, -0.225),
+            20,
+            size=0.004,
+        )
+    add_stitch_line((-0.205, 1.35, 0.065), (0.16, 1.075, 0.095), 18, size=0.004)
+    add_stitch_line((0.16, 0.995, 0.19), (0.27, 0.995, 0.19), 8, size=0.0035)
+    add_stitch_line((0.27, 0.995, 0.19), (0.27, 0.905, 0.19), 7, size=0.0035)
+    add_stitch_line((0.27, 0.905, 0.19), (0.16, 0.905, 0.19), 8, size=0.0035)
+    for x in (-0.16, -0.12, -0.08, -0.04, 0.04, 0.08, 0.12, 0.16):
+        add_ellipsoid("iron", (x, 1.005, 0.139), (0.005, 0.005, 0.003), subdivisions=1)
+    for side in (-1.0, 1.0):
+        add_bar("fold", (side * 0.16, 0.89, 0.115), (side * 0.13, 0.79, 0.119), 0.005)
+        add_bar("fold", (side * 0.18, 0.94, 0.117), (side * 0.16, 0.88, 0.12), 0.004)
+
     # Arms: wool sleeves, leather cuffs, exposed hands, and one iron shoulder cap.
     for side in (-1.0, 1.0):
         shoulder = (side * 0.285, 1.34, 0.0)
@@ -234,10 +296,13 @@ def build_character() -> trimesh.Scene:
         add_oriented_ellipsoid("leather", (side * 0.39, 1.15, 0.0), (side * 0.45, 1.00, 0.02), 0.018, 0.018, subdivisions=1)
     add_ellipsoid("iron", (0.29, 1.395, -0.005), (0.125, 0.075, 0.12))
     add_ellipsoid("brass", (0.29, 1.405, 0.105), (0.027, 0.027, 0.016), subdivisions=1)
+    for rivet_x, rivet_y in ((0.235, 1.40), (0.29, 1.445), (0.345, 1.40)):
+        add_ellipsoid("brass", (rivet_x, rivet_y, 0.106), (0.009, 0.009, 0.006), subdivisions=1)
 
     # Neck, hood, face, hair, and restrained facial features facing local +Z.
     add_ellipsoid("skin", (0.0, 1.455, 0.0), (0.075, 0.09, 0.07))
-    add_ellipsoid("hair", (0.0, 1.625, -0.018), (0.12, 0.16, 0.105))
+    add_ellipsoid("tunic", (0.0, 1.625, -0.025), (0.13, 0.165, 0.115))
+    add_ellipsoid("hair", (0.0, 1.625, -0.005), (0.094, 0.125, 0.083))
     add_ellipsoid("skin", (0.0, 1.625, 0.038), (0.092, 0.118, 0.084))
     add_ellipsoid("hair", (0.0, 1.552, 0.105), (0.063, 0.054, 0.035))
     for side in (-1.0, 1.0):
@@ -246,15 +311,36 @@ def build_character() -> trimesh.Scene:
         add_ellipsoid("hair", (side * 0.034, 1.669, 0.111), (0.021, 0.007, 0.008), subdivisions=1)
     add_ellipsoid("skin", (0.0, 1.62, 0.123), (0.018, 0.033, 0.02), subdivisions=1)
     add_ellipsoid("eye", (0.0, 1.598, 0.117), (0.028, 0.006, 0.006), subdivisions=1)
-    add_ellipsoid("trim", (0.0, 1.765, -0.025), (0.132, 0.035, 0.12))
-    add_ellipsoid("leather", (0.0, 1.738, -0.01), (0.135, 0.028, 0.13))
-    add_box("brass", (0.0, 1.743, 0.108), (0.08, 0.018, 0.018))
+    for side in (-1.0, 1.0):
+        add_stitch_line(
+            (side * 0.105, 1.705, 0.045),
+            (side * 0.102, 1.565, 0.052),
+            12,
+            size=0.0035,
+        )
+    add_ellipsoid("brass", (0.0, 1.475, 0.078), (0.026, 0.028, 0.012), subdivisions=1)
+    add_ellipsoid("thread", (0.0, 1.475, 0.091), (0.008, 0.008, 0.004), subdivisions=1)
+
+    # A small stitched heraldic chevron on the tabard gives the focal point
+    # detail without relying on unreadable micro-texture noise.
+    add_bar("brass", (-0.035, 0.865, 0.164), (0.0, 0.825, 0.166), 0.006)
+    add_bar("brass", (0.0, 0.825, 0.166), (0.035, 0.865, 0.164), 0.006)
+    add_ellipsoid("thread", (0.0, 0.814, 0.168), (0.006, 0.007, 0.003), subdivisions=1)
 
     # A sheathed arming sword at the left hip; rigid prop, not an animated weapon.
     add_oriented_ellipsoid("leather", (-0.30, 0.97, -0.02), (-0.43, 0.39, -0.035), 0.037, 0.045)
     add_ellipsoid("iron", (-0.43, 0.395, -0.035), (0.039, 0.045, 0.047), subdivisions=1)
     add_oriented_ellipsoid("iron", (-0.30, 0.94, -0.02), (-0.285, 1.10, 0.005), 0.019, 0.018)
+    add_oriented_ellipsoid("leather", (-0.294, 1.00, -0.01), (-0.285, 1.09, 0.004), 0.015, 0.015)
+    for wrap in range(5):
+        t = (wrap + 0.5) / 5.0
+        x = -0.294 + 0.009 * t
+        y = 1.00 + 0.09 * t
+        z = -0.01 + 0.014 * t
+        add_bar("thread", (x - 0.016, y, z + 0.012), (x + 0.016, y + 0.004, z + 0.012), 0.0025)
     add_box("iron", (-0.30, 0.965, 0.002), (0.16, 0.025, 0.03))
+    for guard_x in (-0.37, -0.23):
+        add_ellipsoid("brass", (guard_x, 0.965, 0.02), (0.012, 0.012, 0.009), subdivisions=1)
     add_ellipsoid("brass", (-0.285, 1.112, 0.005), (0.035, 0.035, 0.035), subdivisions=1)
     for y in (0.55, 0.79):
         add_bar("leather", (-0.39, y, -0.015), (-0.28, y + 0.04, -0.015), 0.012)
