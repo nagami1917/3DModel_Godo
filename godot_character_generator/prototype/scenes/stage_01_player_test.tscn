@@ -1,0 +1,190 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="PackedScene" path="res://prototype/scenes/knight_player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://scripts/prototype/third_person_camera_rig.gd" id="2_camera_rig"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(24, 0.4, 24)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(24, 0.4, 24)
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.16, 0.18, 0.19, 1)
+roughness = 0.95
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns"]
+size = Vector3(24, 2, 0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ns"]
+size = Vector3(24, 2, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ew"]
+size = Vector3(0.6, 2, 24)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ew"]
+size = Vector3(0.6, 2, 24)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pillar"]
+size = Vector3(0.8, 1.4, 0.8)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pillar"]
+size = Vector3(0.8, 1.4, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="Material_stone"]
+albedo_color = Color(0.27, 0.29, 0.31, 1)
+roughness = 0.92
+
+[sub_resource type="Environment" id="Environment_stage"]
+background_mode = 1
+background_color = Color(0.36, 0.43, 0.51, 1)
+ambient_light_source = 1
+ambient_light_color = Color(0.67, 0.71, 0.78, 1)
+ambient_light_energy = 0.7
+
+[node name="Stage01PlayerTest" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_stage")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-48, -32, 0)
+light_energy = 1.15
+shadow_enabled = true
+
+[node name="KnightPlayer" parent="." instance=ExtResource("1_player")]
+position = Vector3(0, 0.02, 0)
+
+[node name="CameraRig" type="Node3D" parent="."]
+script = ExtResource("2_camera_rig")
+target_path = NodePath("../KnightPlayer")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraRig"]
+position = Vector3(0, 0, 0)
+spring_length = 3.8
+margin = 0.15
+collision_mask = 1
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig/SpringArm3D"]
+current = true
+fov = 70.0
+
+[node name="ArenaFloor" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 2
+
+[node name="FloorMesh" type="MeshInstance3D" parent="ArenaFloor"]
+position = Vector3(0, -0.2, 0)
+mesh = SubResource("BoxMesh_floor")
+material_override = SubResource("Material_floor")
+
+[node name="FloorCollision" type="CollisionShape3D" parent="ArenaFloor"]
+position = Vector3(0, -0.2, 0)
+shape = SubResource("BoxShape3D_floor")
+
+[node name="NorthWall" type="StaticBody3D" parent="."]
+position = Vector3(0, 1, -12)
+collision_layer = 1
+collision_mask = 2
+
+[node name="Mesh" type="MeshInstance3D" parent="NorthWall"]
+mesh = SubResource("BoxMesh_wall_ns")
+material_override = SubResource("Material_stone")
+
+[node name="Collision" type="CollisionShape3D" parent="NorthWall"]
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="SouthWall" type="StaticBody3D" parent="."]
+position = Vector3(0, 1, 12)
+collision_layer = 1
+collision_mask = 2
+
+[node name="Mesh" type="MeshInstance3D" parent="SouthWall"]
+mesh = SubResource("BoxMesh_wall_ns")
+material_override = SubResource("Material_stone")
+
+[node name="Collision" type="CollisionShape3D" parent="SouthWall"]
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="WestWall" type="StaticBody3D" parent="."]
+position = Vector3(-12, 1, 0)
+collision_layer = 1
+collision_mask = 2
+
+[node name="Mesh" type="MeshInstance3D" parent="WestWall"]
+mesh = SubResource("BoxMesh_wall_ew")
+material_override = SubResource("Material_stone")
+
+[node name="Collision" type="CollisionShape3D" parent="WestWall"]
+shape = SubResource("BoxShape3D_wall_ew")
+
+[node name="EastWall" type="StaticBody3D" parent="."]
+position = Vector3(12, 1, 0)
+collision_layer = 1
+collision_mask = 2
+
+[node name="Mesh" type="MeshInstance3D" parent="EastWall"]
+mesh = SubResource("BoxMesh_wall_ew")
+material_override = SubResource("Material_stone")
+
+[node name="Collision" type="CollisionShape3D" parent="EastWall"]
+shape = SubResource("BoxShape3D_wall_ew")
+
+[node name="PillarNorthWest" type="StaticBody3D" parent="."]
+position = Vector3(-5, 0.7, -5)
+collision_layer = 1
+collision_mask = 2
+
+[node name="Mesh" type="MeshInstance3D" parent="PillarNorthWest"]
+mesh = SubResource("BoxMesh_pillar")
+material_override = SubResource("Material_stone")
+
+[node name="Collision" type="CollisionShape3D" parent="PillarNorthWest"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="PillarNorthEast" type="StaticBody3D" parent="."]
+position = Vector3(5, 0.7, -5)
+collision_layer = 1
+collision_mask = 2
+
+[node name="Mesh" type="MeshInstance3D" parent="PillarNorthEast"]
+mesh = SubResource("BoxMesh_pillar")
+material_override = SubResource("Material_stone")
+
+[node name="Collision" type="CollisionShape3D" parent="PillarNorthEast"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="PillarSouthWest" type="StaticBody3D" parent="."]
+position = Vector3(-5, 0.7, 5)
+collision_layer = 1
+collision_mask = 2
+
+[node name="Mesh" type="MeshInstance3D" parent="PillarSouthWest"]
+mesh = SubResource("BoxMesh_pillar")
+material_override = SubResource("Material_stone")
+
+[node name="Collision" type="CollisionShape3D" parent="PillarSouthWest"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="PillarSouthEast" type="StaticBody3D" parent="."]
+position = Vector3(5, 0.7, 5)
+collision_layer = 1
+collision_mask = 2
+
+[node name="Mesh" type="MeshInstance3D" parent="PillarSouthEast"]
+mesh = SubResource("BoxMesh_pillar")
+material_override = SubResource("Material_stone")
+
+[node name="Collision" type="CollisionShape3D" parent="PillarSouthEast"]
+shape = SubResource("BoxShape3D_pillar")
+
+[node name="ControlsHUD" type="CanvasLayer" parent="."]
+
+[node name="Controls" type="Label" parent="ControlsHUD"]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 720.0
+offset_bottom = 68.0
+theme_override_colors/font_color = Color(0.96, 0.93, 0.86, 1)
+theme_override_font_sizes/font_size = 18
+text = "WASD Move  |  Shift Sprint  |  Mouse Look  |  Esc Release Cursor  |  Click to Capture"
