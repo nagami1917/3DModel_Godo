@@ -18,9 +18,9 @@ Use this as the shared art direction for every model in the game. Replace **[ASS
 
 ## User-provided character reference
 
-For the current character asset, use the user-provided [Google Drive Reference folder](https://drive.google.com/drive/folders/1y1GXiklQQYsBQpzgUDrvG5Vj8fToEmxl) as a design guide. The selected source is Quaternius' **Modular Character Outfits - Fantasy**, especially [Male_Ranger.gltf](https://drive.google.com/file/d/1jV8ezpKWPclEh99l1GSZycilavAcC2JR/view?usp=drivesdk), with its hood and pauldron components as modular outfit cues. The folder's `License_Standard.txt` identifies the source pack as **CC0 1.0 Universal**. The repository's wanderer is independently procedurally re-authored; the reference geometry and textures are not bundled.
+Use the user-provided [Google Drive Reference folder](https://drive.google.com/drive/folders/1y1GXiklQQYsBQpzgUDrvG5Vj8fToEmxl) as the visual baseline for the character examples. The folder contains Quaternius' **Modular Character Outfits - Fantasy**, including [Male_Ranger.gltf](https://drive.google.com/file/d/1jV8ezpKWPclEh99l1GSZycilavAcC2JR/view?usp=drivesdk) and modular hood/pauldron pieces. Its `License_Standard.txt` identifies the source pack as **CC0 1.0 Universal**. The repository's wanderer and knight are independently procedurally authored; the reference geometry and textures are not bundled. The knight also uses the wanderer's scale and layout as a baseline, while adding original plate armor, a shield, and a sheathed sword.
 
-Carry forward the reference's readable stylized proportions, hooded silhouette, layered cloth/leather outfit, boots, and restrained gear while keeping each new asset original and game-ready. See the asset's [`character_info.md`](godot_character_generator/assets/characters/medieval_wanderer/character_info.md) for the exact design and license notes.
+Carry forward the reference's readable stylized proportions, clean modular outfit layers, boots, and restrained earthy palette while keeping each new asset original and game-ready. See the [wanderer notes](godot_character_generator/assets/characters/medieval_wanderer/character_info.md) and [knight notes](godot_character_generator/assets/characters/medieval_knight/character_info.md) for design, source, and license details.
 
 ## Animation requirements
 
