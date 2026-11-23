@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111820" />
+    <meta name="description" content="An interactive 3D preview of the low-poly Medieval Knight character for Godot." />
+    <title>The Oathbound — Character Archive</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Field Archive home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none">
+              <path d="M20 3.5 33 8v10.8c0 8.4-5.2 13.8-13 17.7C12.2 32.6 7 27.2 7 18.8V8l13-4.5Z" stroke="currentColor" stroke-width="1.5" />
+              <path d="M20 10v18M13 17h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+            </svg>
+          </span>
+          <span class="brand-copy"><strong>FIELD ARCHIVE</strong><small>MEDIEVAL ASSET STUDY</small></span>
+        </a>
+        <nav class="top-nav" aria-label="Main navigation">
+          <span class="nav-current"><i></i> CHARACTER 01</span>
+          <span class="top-divider"></span>
+          <span class="nav-meta">GODOT 4 · GLB</span>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero-grid" aria-labelledby="character-title">
+          <div class="intro-panel">
+            <p class="eyebrow"><span>01</span> / THE ORDER OF THE RED CROSS</p>
+            <h1 id="character-title">The<br /><em>Oathbound</em></h1>
+            <p class="intro-copy">A road-worn knight in tempered steel and oxblood cloth. Turn the model, inspect the silhouette, and take the Godot-ready GLB when you are ready.</p>
+
+            <div class="status-line">
+              <span class="status-dot" id="model-status-dot"></span>
+              <span id="model-status">LOADING MODEL</span>
+              <span class="status-rule"></span>
+              <span class="status-type">STATIC ASSET</span>
+            </div>
+
+            <div class="spec-grid" aria-label="Model specifications">
+              <div class="spec-card"><span class="spec-label">HEIGHT</span><strong>1.96 <small>m</small></strong><span class="spec-note">grounded at origin</span></div>
+              <div class="spec-card"><span class="spec-label">GEOMETRY</span><strong>12.7 <small>k tris</small></strong><span class="spec-note">12 named material groups</span></div>
+              <div class="spec-card"><span class="spec-label">FACING</span><strong>+Z</strong><span class="spec-note">Y-up coordinate space</span></div>
+            </div>
+
+            <div class="feature-list" aria-label="Character details">
+              <span><i>✳</i> Forged-steel plate &amp; mail</span>
+              <span><i>✳</i> Heater shield &amp; sheathed sword</span>
+              <span><i>✳</i> Oxblood cape, linen heraldry</span>
+            </div>
+
+            <div class="action-row">
+              <a class="download-button" href="/medieval_knight.glb" download="medieval_knight.glb">
+                <span>DOWNLOAD GLB</span>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.8v9.1m0 0 3.4-3.4M10 11.9 6.6 8.5M3.6 13.4v2.2c0 .8.6 1.4 1.4 1.4h10c.8 0 1.4-.6 1.4-1.4v-2.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </a>
+              <a class="scene-link" href="https://github.com/nagami1917/3DModel_Godo/tree/main/godot_character_generator/assets/characters/medieval_knight" target="_blank" rel="noreferrer">GODOT SCENE <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+
+          <div class="viewer-column">
+            <div class="viewer-frame">
+              <div class="frame-header">
+                <span><i class="live-indicator"></i> INTERACTIVE MODEL VIEW</span>
+                <span class="frame-coordinate">FRONT · +Z</span>
+              </div>
+              <div class="viewer-stage">
+                <div class="stage-grid" aria-hidden="true"></div>
+                <div class="stage-glow" aria-hidden="true"></div>
+                <model-viewer
+                  id="knight-viewer"
+                  src="/medieval_knight.glb"
+                  alt="Low-poly Medieval Knight wearing a steel helmet and armor, holding a heater shield with a sheathed sword."
+                  camera-controls
+                  auto-rotate
+                  auto-rotate-delay="800"
+                  rotation-per-second="12deg"
+                  interaction-prompt="none"
+                  shadow-intensity="1.15"
+                  exposure="1.12"
+                  camera-orbit="28deg 76deg 4.1m"
+                  min-camera-orbit="auto auto 2m"
+                  max-camera-orbit="auto auto 8m"
+                  field-of-view="28deg"
+                  touch-action="pan-y"
+                  loading="eager"
+                  reveal="auto"
+                >
+                  <div class="model-progress" slot="progress-bar"><span></span></div>
+                  <div class="model-error" slot="poster">The 3D model could not be loaded.</div>
+                </model-viewer>
+                <div class="viewer-instruction"><span class="drag-icon" aria-hidden="true">⤧</span> DRAG TO ROTATE <b>·</b> SCROLL TO ZOOM</div>
+                <div class="corner-index">FIG. 01</div>
+              </div>
+              <div class="frame-footer">
+                <span>PLATE ARMOR / FIELD KIT</span>
+                <span>GLB 2.0 <b>·</b> 241 KB</span>
+              </div>
+            </div>
+
+            <div class="viewer-controls" aria-label="Model controls">
+              <button class="control-button" id="spin-toggle" type="button" aria-pressed="true">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 9.8A6.5 6.5 0 0 0 5.1 6.1L3.5 7.7M3.5 7.7V4.6m0 3.1h3.1M3.5 10.2a6.5 6.5 0 0 0 11.4 3.7l1.6-1.6m0 0v3.1m0-3.1h-3.1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>PAUSE ROTATION</span>
+              </button>
+              <button class="control-button control-reset" id="reset-view" type="button">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 8.5A6.5 6.5 0 1 1 4 12m-.5-7v3.5H7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                <span>RESET VIEW</span>
+              </button>
+              <span class="control-tip">MOUSE / TOUCH ENABLED</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="archive-note" aria-label="Reference and model note">
+          <div class="note-icon" aria-hidden="true">✳</div>
+          <p><strong>DESIGN NOTE</strong><span>Style and proportions take cues from Quaternius’ Modular Character Outfits — Fantasy reference pack (CC0 1.0). This knight is original procedural geometry; source meshes and textures are not included.</span></p>
+          <span class="note-index">ARCHIVE / 001</span>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <span>FIELD ARCHIVE <i>—</i> CHARACTER STUDIES</span>
+        <span>BUILT FOR GODOT 4 <i>·</i> MODEL VIEWER</span>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
