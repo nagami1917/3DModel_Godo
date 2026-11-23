@@ -1,11 +1,16 @@
-"""Build a static, stylized medieval wanderer GLB.
+"""Build a static, stylized medieval wanderer GLB with a ranger outfit.
+
+The character is independently re-authored in the spirit of the user-provided
+Quaternius Modular Character Outfits - Fantasy reference (Male_Ranger.gltf,
+CC0 1.0). The reference informs the hooded silhouette and modular outfit pieces;
+no reference meshes or textures are embedded in this output.
 
 Requires: python -m pip install numpy trimesh
 Run from repository root:
   python godot_character_generator/tools/generate_medieval_wanderer.py
 
-This is a game-ready low-poly prop/character blockout, not a rigged or realistic
-source character. GLB materials are simple PBR color/roughness presets.
+This is a game-ready low-poly static character, not a rigged or realistic source
+character. GLB materials are simple PBR color/roughness presets.
 """
 from __future__ import annotations
 
@@ -24,9 +29,11 @@ SEGMENTS = 16
 
 PALETTE = {
     "tunic": PBRMaterial(name="Weathered forest wool", baseColorFactor=[55, 75, 49, 255], metallicFactor=0.0, roughnessFactor=0.94),
+    "hood": PBRMaterial(name="Deep moss hood cloth", baseColorFactor=[43, 59, 42, 255], metallicFactor=0.0, roughnessFactor=0.96),
     "trim": PBRMaterial(name="Muted russet linen", baseColorFactor=[129, 65, 42, 255], metallicFactor=0.0, roughnessFactor=0.9),
     "trousers": PBRMaterial(name="Brown wool trousers", baseColorFactor=[75, 58, 43, 255], metallicFactor=0.0, roughnessFactor=0.96),
     "leather": PBRMaterial(name="Oiled dark leather", baseColorFactor=[71, 43, 28, 255], metallicFactor=0.0, roughnessFactor=0.82),
+    "wood": PBRMaterial(name="Oiled yew bow and arrow shafts", baseColorFactor=[101, 67, 38, 255], metallicFactor=0.0, roughnessFactor=0.84),
     "skin": PBRMaterial(name="Warm skin", baseColorFactor=[174, 119, 84, 255], metallicFactor=0.0, roughnessFactor=0.78),
     "iron": PBRMaterial(name="Forged iron", baseColorFactor=[74, 80, 79, 255], metallicFactor=0.68, roughnessFactor=0.48),
     "brass": PBRMaterial(name="Aged brass", baseColorFactor=[157, 119, 55, 255], metallicFactor=0.72, roughnessFactor=0.42),
@@ -206,8 +213,8 @@ def build_character() -> trimesh.Scene:
         add_ellipsoid("leather", (side * 0.14, 0.49, 0.015), (0.083, 0.075, 0.09))
         add_oriented_ellipsoid("trousers", knee, ankle, 0.072, 0.077)
         add_ellipsoid("leather", (side * 0.145, 0.20, 0.005), (0.08, 0.055, 0.083))
-        add_ellipsoid("leather", (side * 0.145, 0.115, 0.045), (0.098, 0.105, 0.16))
-        add_box("leather", (side * 0.145, 0.027, 0.045), (0.17, 0.025, 0.32))
+        add_ellipsoid("leather", (side * 0.145, 0.105, 0.045), (0.098, 0.105, 0.16))
+        add_box("leather", (side * 0.145, 0.0125, 0.045), (0.17, 0.025, 0.32))
         add_box("iron", (side * 0.145, 0.175, -0.025), (0.13, 0.035, 0.055))
         for lace_y in (0.18, 0.21, 0.24):
             add_bar(
@@ -254,6 +261,54 @@ def build_character() -> trimesh.Scene:
     add_ellipsoid("trim", (0.215, 0.95, 0.09), (0.09, 0.10, 0.075))
     add_box("leather", (0.215, 0.95, 0.17), (0.12, 0.12, 0.035))
 
+    # Ranger kit: a strapped back quiver, three fletched arrows, and a compact
+    # yew bow. These are rigid silhouette props, not separate animations.
+    add_oriented_ellipsoid("leather", (0.19, 1.50, -0.27), (0.28, 0.91, -0.28), 0.052, 0.052)
+    add_ellipsoid("leather", (0.19, 1.49, -0.27), (0.062, 0.036, 0.061))
+    for strap_y in (1.12, 1.37):
+        add_oriented_ellipsoid(
+            "leather",
+            (0.11, strap_y, -0.17),
+            (0.25, strap_y + 0.035, -0.29),
+            0.014,
+            0.016,
+            subdivisions=1,
+        )
+    for arrow_index, start_x in enumerate((0.155, 0.19, 0.225)):
+        arrow_end = (start_x + (arrow_index - 1) * 0.012, 1.63 - abs(arrow_index - 1) * 0.018, -0.28)
+        arrow_start = (start_x, 1.43, -0.28)
+        add_bar("wood", arrow_start, arrow_end, 0.0045)
+        add_ellipsoid(
+            "thread",
+            (arrow_end[0], arrow_end[1] - 0.035, arrow_end[2]),
+            (0.014, 0.024, 0.006),
+            subdivisions=1,
+        )
+        add_ellipsoid(
+            "trim",
+            (arrow_end[0], arrow_end[1] - 0.035, arrow_end[2] - 0.008),
+            (0.007, 0.019, 0.003),
+            subdivisions=1,
+        )
+        add_bar(
+            "iron",
+            (arrow_start[0], arrow_start[1] - 0.07, arrow_start[2]),
+            (arrow_start[0], arrow_start[1] - 0.035, arrow_start[2]),
+            0.003,
+        )
+
+    bow_points = [
+        (0.31, 0.82, -0.30),
+        (0.38, 0.97, -0.31),
+        (0.425, 1.15, -0.32),
+        (0.38, 1.33, -0.31),
+        (0.31, 1.49, -0.30),
+    ]
+    for bow_start, bow_end in zip(bow_points, bow_points[1:]):
+        add_bar("wood", bow_start, bow_end, 0.013)
+    add_bar("thread", bow_points[0], bow_points[-1], 0.0025)
+    add_oriented_ellipsoid("leather", (0.41, 1.10, -0.325), (0.41, 1.20, -0.325), 0.018, 0.018, subdivisions=1)
+
     # Visible tailoring: tabard edge stitches, harness stitches, pouch seams,
     # cape piping, belt holes, and shallow cloth folds.
     for side in (-1.0, 1.0):
@@ -299,14 +354,23 @@ def build_character() -> trimesh.Scene:
     for rivet_x, rivet_y in ((0.235, 1.40), (0.29, 1.445), (0.345, 1.40)):
         add_ellipsoid("brass", (rivet_x, rivet_y, 0.106), (0.009, 0.009, 0.006), subdivisions=1)
 
-    # Neck, hood, face, hair, and restrained facial features facing local +Z.
+    # Neck, cloth hood, visible face, and restrained features facing local +Z.
     add_ellipsoid("skin", (0.0, 1.455, 0.0), (0.075, 0.09, 0.07))
-    add_ellipsoid("tunic", (0.0, 1.625, -0.025), (0.13, 0.165, 0.115))
+    add_ellipsoid("hood", (0.0, 1.635, -0.025), (0.15, 0.175, 0.14))
     add_ellipsoid("hair", (0.0, 1.625, -0.005), (0.094, 0.125, 0.083))
     add_ellipsoid("skin", (0.0, 1.625, 0.038), (0.092, 0.118, 0.084))
+    add_ellipsoid("hood", (0.0, 1.713, 0.079), (0.112, 0.034, 0.054))
     add_ellipsoid("hair", (0.0, 1.552, 0.105), (0.063, 0.054, 0.035))
     for side in (-1.0, 1.0):
         add_ellipsoid("skin", (side * 0.096, 1.628, 0.02), (0.025, 0.04, 0.026), subdivisions=1)
+        add_oriented_ellipsoid(
+            "hood",
+            (side * 0.119, 1.69, 0.015),
+            (side * 0.096, 1.55, 0.015),
+            0.031,
+            0.042,
+            subdivisions=1,
+        )
         add_ellipsoid("eye", (side * 0.034, 1.65, 0.113), (0.012, 0.009, 0.007), subdivisions=1)
         add_ellipsoid("hair", (side * 0.034, 1.669, 0.111), (0.021, 0.007, 0.008), subdivisions=1)
     add_ellipsoid("skin", (0.0, 1.62, 0.123), (0.018, 0.033, 0.02), subdivisions=1)
@@ -347,8 +411,9 @@ def build_character() -> trimesh.Scene:
 
     scene = trimesh.Scene(base_frame="world")
     scene.metadata.update({
-        "asset_name": "Medieval Wanderer",
-        "authoring_note": "Static stylized low-poly GLB. Grounded at origin; front faces +Z; Y-up.",
+        "asset_name": "Medieval Wanderer — Ranger-inspired",
+        "authoring_note": "Independent static stylized low-poly GLB. Grounded at origin; front faces +Z; Y-up.",
+        "reference_source": "Quaternius Modular Character Outfits - Fantasy, Male_Ranger.gltf (CC0 1.0)",
         "height_m": 1.8,
         "generation_seed": 1917,
     })

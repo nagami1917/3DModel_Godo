@@ -16,6 +16,12 @@ Use this as the shared art direction for every model in the game. Replace **[ASS
 
 > Create one stylized, game-ready 3D model of a medieval roadside watchtower for a medieval open-world exploration game. Build it from rough limestone and dark oak, with a compact stone base, a timber lookout platform, a simple ladder, narrow arrow slits, a small crenellated parapet, and an iron-banded wooden door. Add light moss, worn stone edges, and one faded red-and-cream cloth banner with a simple, non-readable heraldic emblem. Keep the construction believable and hand-crafted, with a clear silhouette and details visible at gameplay distance. Use muted, earthy colors and restrained weathering; avoid exaggerated fantasy shapes and anything modern or sci-fi. Make it low-to-medium poly, clean and watertight, grounded at the origin, human-scale, and facing +Z. Use clean UVs and PBR textures, and deliver a textured GLB for Godot 4. Model only the tower—no road, terrain, buildings, people, extra props, text, or background.
 
+## User-provided character reference
+
+For the current character asset, use the user-provided [Google Drive Reference folder](https://drive.google.com/drive/folders/1y1GXiklQQYsBQpzgUDrvG5Vj8fToEmxl) as a design guide. The selected source is Quaternius' **Modular Character Outfits - Fantasy**, especially [Male_Ranger.gltf](https://drive.google.com/file/d/1jV8ezpKWPclEh99l1GSZycilavAcC2JR/view?usp=drivesdk), with its hood and pauldron components as modular outfit cues. The folder's `License_Standard.txt` identifies the source pack as **CC0 1.0 Universal**. The repository's wanderer is independently procedurally re-authored; the reference geometry and textures are not bundled.
+
+Carry forward the reference's readable stylized proportions, hooded silhouette, layered cloth/leather outfit, boots, and restrained gear while keeping each new asset original and game-ready. See the asset's [`character_info.md`](godot_character_generator/assets/characters/medieval_wanderer/character_info.md) for the exact design and license notes.
+
 ## Animation requirements
 
 Not every asset needs animation. Keep static environment props, such as the watchtower, static; rig only parts that should move (for example, a gate or a hanging banner). A sword is a rigid prop and should move with the character's hand, rather than having its own attack animation.
